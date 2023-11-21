@@ -1,24 +1,29 @@
-// Импорт библиотек и компонентов React
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux'; // Импорт хуков React Redux для работы с состоянием Redux
-// Импорт компонентов приложения
-
-import ContactForm from './ContactForm/ContactForm'; // Компонент формы для добавления контактов
-import ContactList from './Contacts/ContactsList'; // Компонент списка контактов
-import Filter from './Filter/Filter'; // Компонент фильтра для поиска контактов
-import css from './App.module.css'; // Стили приложения
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ContactForm from './ContactForm/ContactForm';
+import ContactList from './Contacts/ContactsList';
+import Filter from './Filter/Filter';
+import css from './App.module.css';
 import { addContact, deleteContact, filterContact } from 'redux/reducer';
 
-// Основной компонент приложения
 const App = () => {
-  const dispatch = useDispatch(); // Получение функции dispatch для отправки действий в Redux Store
-  const contacts = useSelector(state => state.contactsStore.contacts); // Получение контактов из хранилища Redux
-  console.log('contacts', contacts);
-  const filter = useSelector(state => state.contactsStore.filter); // Получение фильтра из хранилища Redux
+  // Локальное состояние для отслеживания активной вкладки
+  const [activeTab, setActiveTab] = useState('form');
+
+  // Получение функции dispatch для отправки действий в Redux Store
+  const dispatch = useDispatch();
+
+  // Получение контактов и фильтра из хранилища Redux
+  const contacts = useSelector(state => state.contactsStore.contacts);
+  const filter = useSelector(state => state.contactsStore.filter);
+
+  // Функция для изменения активной вкладки
+  const handleTabChange = tab => {
+    setActiveTab(tab);
+  };
 
   // Функция для добавления нового контакта
   const handleAddContact = newContact => {
-    // Проверка на наличие дубликата контакта
     const normalizeName = newContact.name.toLowerCase();
     const isDuplicate = contacts.some(
       contact => contact.name.toLowerCase() === normalizeName
@@ -52,21 +57,47 @@ const App = () => {
     );
   };
 
-  // Рендеринг компонентов и передача необходимых данных и обработчиков событий
   return (
     <div className={css.container}>
       <h1>Phonebook</h1>
-      {/* Рендеринг формы для добавления контакта и передача метода addContact как обработчика */}
-      <ContactForm onSubmit={handleAddContact} />
-      <h2>Contacts</h2>
-      {/* Рендеринг фильтра и списка контактов */}
-      <Filter value={filter} onChange={handleFilterChange} />
-      <ContactList
-        contacts={getFilteredContacts()} // Передача отфильтрованного массива контактов
-        onDeleteContact={contactId => handleDeleteContact(contactId)} // Передача функции для удаления контакта с аргументом
-      />
+
+      {/* Компоненты для переключения между вкладками */}
+      <div className={css.tabs}>
+        {/* Кнопка для переключения на форму добавления контакта */}
+        <button
+          onClick={() => handleTabChange('form')}
+          className={activeTab === 'form' ? css.activeTab : ''}
+        >
+          Contact Form
+        </button>
+
+        {/* Кнопка для переключения на фильтр и список контактов */}
+        <button
+          onClick={() => handleTabChange('list')}
+          className={activeTab === 'list' ? css.activeTab : ''}
+        >
+          Contact List
+        </button>
+      </div>
+
+      {/* Контент соответствующей вкладки */}
+      <div className={css.tabContent}>
+        {/* Если активная вкладка - форма добавления контакта */}
+        {activeTab === 'form' && <ContactForm onSubmit={handleAddContact} />}
+
+        {/* Если активная вкладка - список контактов */}
+        {activeTab === 'list' && (
+          <div className={css.contactsAndSearchWrapper}>
+            <Filter value={filter} onChange={handleFilterChange} />
+            <ContactList
+              contacts={getFilteredContacts()}
+              onDeleteContact={handleDeleteContact}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
-export default App; // Экспорт основного компонента приложения
+export default App;
