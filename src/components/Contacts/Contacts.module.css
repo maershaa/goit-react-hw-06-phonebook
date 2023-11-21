@@ -10,7 +10,7 @@
   justify-content: center;
   gap: 18px;
 
-  width: 400px;
+  /* width: 400px; */
   background: #feac5e; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
@@ -48,32 +48,37 @@
 
   color: white;
   font-size: 18px;
+
+  list-style: none;
+  padding: 10px 30px;
+
+  width: 300px;
+  margin: 0;
+  max-height: 390px;
+  overflow-y: scroll;
 }
 
-.contactsList .item {
-  color: white;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+/* ============================================== */
+/* Cnилизации полосы прокрутки (scrollbar)  */
+/* Для полосы прокрутки */
+/* Общие стили */
+::-webkit-scrollbar {
+  width: 8px; /* Ширина полосы */
 }
 
-.deleteButton {
-  cursor: pointer;
-
-  color: #fff;
-  background-color: #4bc0c8;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
-
-  margin-left: 10px;
-
-  transition: transform 0.2s, background-color 0.2s; /* Добавили transition для изменения цвета */
+/* Стили для трека (фоновая часть полосы) */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Цвет фона трека */
+  border-radius: 4px; /* Скругление углов полосы */
 }
 
-.deleteButton:hover,
-.deleteButton:focus {
-  transform: scale(1.1);
-  background-color: #c779d0; /* Изменение цвета при наведении и фокусе */
+/* Стили для полосы прокрутки */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(75, 192, 200, 0.7); /* Цвет полосы прокрутки */
+  border-radius: 4px; /* Скругление углов полосы */
+}
+
+/* Стили для кнопок прокрутки (не везде поддерживается) */
+::-webkit-scrollbar-button {
+  display: none; /* Скрыть кнопки */
 }

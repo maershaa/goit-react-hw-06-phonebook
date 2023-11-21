@@ -50,7 +50,6 @@ const ContactForm = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit} className={css.form}>
       <label htmlFor={loginInputId} className={css.formLabel}>
-        Name
         <input
           type="text"
           name="name"
@@ -63,11 +62,11 @@ const ContactForm = ({ onSubmit }) => {
           onChange={handleChange}
           id={loginInputId}
           className={css.inputText}
+          placeholder="Name"
         />
       </label>
 
       <label htmlFor={loginInputId} className={css.formLabel}>
-        Number
         <input
           type="tel"
           name="number"
@@ -78,11 +77,12 @@ const ContactForm = ({ onSubmit }) => {
           onChange={handleChange}
           id={loginInputId}
           className={css.inputText}
+          placeholder="Number"
         />
       </label>
 
       <button type="submit" className={css.addButton}>
-        Add contact
+        Save
       </button>
     </form>
   );

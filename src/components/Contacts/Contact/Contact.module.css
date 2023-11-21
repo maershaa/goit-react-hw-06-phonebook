@@ -1,0 +1,75 @@
+.phoneName {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 19.2px;
+  margin: 0;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.phoneNumber {
+  color: white;
+  font-size: 14px;
+  font-weight: 100;
+  line-height: 17.8px;
+  margin: 0;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.item {
+  position: relative;
+  margin-bottom: 10px;
+
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  border-bottom: 1px solid white;
+}
+
+/* .deleteButton {
+  cursor: pointer;
+
+  color: #fff;
+  background-color: #4bc0c8;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+
+  margin-left: 10px;
+
+  transition: transform 0.2s, background-color 0.2s; /* Добавили transition для изменения цвета */
+/* } */
+
+/* .deleteButton:hover,
+.deleteButton:focus {
+  transform: scale(1.1);
+  background-color: #c779d0; /* Изменение цвета при наведении и фокусе */
+/* }  */
+.iconsList {
+  list-style: none;
+  padding: 0;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.iconsList li {
+  width: 30px;
+  height: 30px;
+}
+
+.favouriteIcon,
+.deleteIcon {
+  cursor: pointer;
+}
+
+.favouriteIcon.active {
+  fill: white;
+  stroke: white;
+}
