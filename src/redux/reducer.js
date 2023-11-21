@@ -21,11 +21,20 @@ const contactsSlice = createSlice({
       // Обновление фильтра для поиска контактов
       state.filter = action.payload;
     },
+
+    toggleFavourite(state, action) {
+      for (const contact of state) {
+        if (contact.id === action.payload) {
+          contact.selected = !contact.selected;
+          break;
+        }
+      }
+    },
   },
 });
 
 // Экспорт созданных действий (actions) для использования в других частях приложения
-export const { addContact, deleteContact, filterContact } =
+export const { addContact, deleteContact, filterContact, toggleFavourite } =
   contactsSlice.actions;
 
 // Экспорт редуктора, который автоматически создан функцией createSlice

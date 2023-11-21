@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import css from 'components/Contacts/Contact/Contact.module.css';
+import { toggleFavourite } from 'redux/actions';
+import { getContactFavouriteStatus } from 'redux/selectors';
 
 const Contact = ({ id, name, number, onDeleteContact }) => {
-  const [isFavourite, setIsFavourite] = useState(false);
+  const dispatch = useDispatch();
+  const isFavourite = useSelector(state =>
+    getContactFavouriteStatus(state, id)
+  );
 
-  const toggleFavourite = id => {
-    setIsFavourite(!isFavourite);
+  const [isActive, setIsActive] = useState(isFavourite);
+
+  const handleToggleFavourite = () => {
+    dispatch(toggleFavourite(id));
+    setIsActive(!isActive);
   };
-
   return (
-    <li key={id} className={css.item}>
+    <li
+      key={id}
+      className={isFavourite ? `${css.item} ${css.active}` : css.item}
+    >
       <div>
         {/* Отображаем имя и номер контакта */}
         <p className={css.phoneName}>{name}</p>
@@ -19,8 +30,8 @@ const Contact = ({ id, name, number, onDeleteContact }) => {
       <ul className={css.iconsList}>
         <li>
           <svg
-            onClick={toggleFavourite}
-            className={`${css.favouriteIcon} ${isFavourite ? css.active : ''}`}
+            onClick={handleToggleFavourite}
+            className={`${css.favouriteIcon} ${isActive ? css.active : ''}`}
             width="20px"
             height="20px"
             viewBox="0 0 24 24"
@@ -28,9 +39,9 @@ const Contact = ({ id, name, number, onDeleteContact }) => {
             xmlns="http://www.w3.org/2000/svg"
             aria-labelledby="favouriteIconTitle"
             stroke="#ffffff"
-            stroke-width="1"
-            stroke-linecap="square"
-            stroke-linejoin="miter"
+            strokeWidth="1"
+            strokeLinecap="square"
+            strokeLinejoin="miter"
             fill="none"
             color="#ffffff"
           >
@@ -41,7 +52,7 @@ const Contact = ({ id, name, number, onDeleteContact }) => {
         <li>
           <svg
             onClick={() => onDeleteContact(id)}
-            class={css.deleteIcon}
+            className={css.deleteIcon}
             width="20px"
             height="20px"
             viewBox="-3 0 32 32"
