@@ -30,26 +30,6 @@
   border-bottom: 1px solid white;
 }
 
-/* .deleteButton {
-  cursor: pointer;
-
-  color: #fff;
-  background-color: #4bc0c8;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
-
-  margin-left: 10px;
-
-  transition: transform 0.2s, background-color 0.2s; /* Добавили transition для изменения цвета */
-/* } */
-
-/* .deleteButton:hover,
-.deleteButton:focus {
-  transform: scale(1.1);
-  background-color: #c779d0; /* Изменение цвета при наведении и фокусе */
-/* }  */
 .iconsList {
   list-style: none;
   padding: 0;
@@ -67,9 +47,4 @@
 .favouriteIcon,
 .deleteIcon {
   cursor: pointer;
-}
-
-.favouriteIcon.active {
-  fill: white;
-  stroke: white;
 }

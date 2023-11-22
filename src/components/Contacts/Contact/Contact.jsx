@@ -6,28 +6,29 @@ import { getContactFavouriteStatus } from 'redux/selectors';
 import { deleteContact } from 'redux/reducer';
 
 const Contact = ({ id, name, number }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // Получение функции dispatch из React Redux
   const isFavourite = useSelector(state =>
     getContactFavouriteStatus(state, id)
-  );
+  ); // Получение статуса "избранности" контакта из хранилища Redux
 
-  const [isActive, setIsActive] = useState(isFavourite);
+  const [isActive, setIsActive] = useState(isFavourite); // Инициализация локального состояния isActive на основе статуса "избранности" контакта
 
   // Функция для удаления контакта по его ID
   const handleDeleteContact = contactId => {
     // Отправка действия для удаления контакта с помощью Redux Toolkit
-    dispatch(deleteContact(contactId));
+    dispatch(deleteContact(contactId)); // Действие deleteContact вызывается для удаления контакта по его ID
   };
 
+  // Функция для переключения статуса "избранности" контакта
   const handleToggleFavourite = () => {
-    dispatch(toggleFavourite(id));
-    setIsActive(!isActive);
+    dispatch(toggleFavourite(id)); // Вызов действия toggleFavourite для изменения статуса "избранности" контакта в хранилище
+    setIsActive(!isActive); // Инверсия локального состояния isActive для обновления внешнего вида иконки "избранности"
   };
+
+  const isFavouriteSelected = isActive ? 'white' : 'none'; // Условие выбора значения для fill в зависимости от isActive
+
   return (
-    <li
-      key={id}
-      className={isFavourite ? `${css.item} ${css.active}` : css.item}
-    >
+    <li key={id} className={css.item}>
       <div>
         {/* Отображаем имя и номер контакта */}
         <p className={css.phoneName}>{name}</p>
@@ -38,7 +39,7 @@ const Contact = ({ id, name, number }) => {
         <li>
           <svg
             onClick={handleToggleFavourite}
-            className={`${css.favouriteIcon} ${isActive ? css.active : ''}`}
+            className={css.favouriteIcon}
             width="20px"
             height="20px"
             viewBox="0 0 24 24"
@@ -49,7 +50,7 @@ const Contact = ({ id, name, number }) => {
             strokeWidth="1"
             strokeLinecap="square"
             strokeLinejoin="miter"
-            fill="none"
+            fill={isFavouriteSelected}
             color="#ffffff"
           >
             <title id="favouriteIconTitle">Favourite</title>

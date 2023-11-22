@@ -4,7 +4,11 @@ import { createSlice } from '@reduxjs/toolkit';
 // Создание среза контактов с помощью функции createSlice из Redux Toolkit
 const contactsSlice = createSlice({
   name: 'contacts', // Уникальное имя для среза, используется для генерации действий и редуктора
-  initialState: { contacts: [], filter: '' }, // Начальное состояние среза
+  initialState: {
+    contacts: [],
+    filter: '',
+    favouriteContacts: [], // Массив для хранения избранных контактов
+  }, // Начальное состояние среза
   reducers: {
     // Действия (actions) для обновления состояния среза
     addContact(state, action) {
@@ -23,10 +27,28 @@ const contactsSlice = createSlice({
     },
 
     toggleFavourite(state, action) {
-      for (const contact of state) {
-        if (contact.id === action.payload) {
-          contact.selected = !contact.selected;
-          break;
+      // Получение ID контакта из payload действия
+      const contactId = action.payload;
+
+      // Поиск контакта по ID в массиве контактов
+      const existingContact = state.contacts.find(
+        contact => contact.id === contactId
+      );
+
+      if (existingContact) {
+        // Инверсия значения favorite контакта (избранное/не избранное)
+        existingContact.favorite = !existingContact.favorite;
+
+        if (existingContact.favorite) {
+          // Если контакт стал избранным, добавляем его в массив избранных контактов
+          state.isFavourite.push(existingContact);
+          console.log('Added to isFavourite:', state.isFavourite); // Добавление и вывод массива isFavourite
+        } else {
+          // Если контакт больше не является избранным, удаляем его из массива избранных контактов
+          state.isFavourite = state.isFavourite.filter(
+            contact => contact.id !== contactId
+          );
+          console.log('Removed from isFavourite:', state.isFavourite); // Удаление и вывод массива isFavourite
         }
       }
     },
