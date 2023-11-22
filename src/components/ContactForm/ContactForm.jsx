@@ -2,14 +2,48 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import css from 'components/ContactForm/ContactForm.module.css';
 import PropTypes from 'prop-types'; // npm install --save prop-types
+import { addContact } from 'redux/reducer';
+import { useDispatch, useSelector } from 'react-redux';
 
-const ContactForm = ({ onSubmit }) => {
+const ContactForm = () => {
   // Используем useState для управления состоянием полей name и number
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  // Получение контактов и фильтра из хранилища Redux
+  const contacts = useSelector(state => state.contactsStore.contacts);
+
+  // Получение функции dispatch для отправки действий в Redux Store
+  const dispatch = useDispatch();
 
   // Создаем уникальный идентификатор для элемента input
   const loginInputId = nanoid();
+
+  // Обработчик отправки формы
+  const handleSubmit = evt => {
+    evt.preventDefault();
+
+    // Создаем объект контакта с уникальным идентификатором
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    const normalizeName = newContact.name.toLowerCase();
+    const isDuplicate = contacts.some(
+      contact => contact.name.toLowerCase() === normalizeName
+    );
+    if (isDuplicate) {
+      alert(`${newContact.name} уже есть в контактах`);
+      return;
+    }
+
+    // Отправка действия для добавления контакта с помощью Redux Toolkit
+    dispatch(addContact(newContact));
+
+    // Сбрасываем значения полей после добавления контакта
+    reset();
+  };
 
   // Обработчик изменения значений полей input
   const handleChange = evt => {
@@ -21,24 +55,6 @@ const ContactForm = ({ onSubmit }) => {
     } else if (name === 'number') {
       setNumber(value);
     }
-  };
-
-  // Обработчик отправки формы
-  const handleSubmit = evt => {
-    evt.preventDefault();
-
-    // Создаем объект контакта с уникальным идентификатором
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
-    };
-
-    // Вызываем переданный метод onSubmit, чтобы добавить контакт
-    onSubmit(contact);
-
-    // Сбрасываем значения полей после добавления контакта
-    reset();
   };
 
   // Функция для сброса значений полей в исходное состояние

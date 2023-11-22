@@ -3,14 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import css from 'components/Contacts/Contact/Contact.module.css';
 import { toggleFavourite } from 'redux/actions';
 import { getContactFavouriteStatus } from 'redux/selectors';
+import { deleteContact } from 'redux/reducer';
 
-const Contact = ({ id, name, number, onDeleteContact }) => {
+const Contact = ({ id, name, number }) => {
   const dispatch = useDispatch();
   const isFavourite = useSelector(state =>
     getContactFavouriteStatus(state, id)
   );
 
   const [isActive, setIsActive] = useState(isFavourite);
+
+  // Функция для удаления контакта по его ID
+  const handleDeleteContact = contactId => {
+    // Отправка действия для удаления контакта с помощью Redux Toolkit
+    dispatch(deleteContact(contactId));
+  };
 
   const handleToggleFavourite = () => {
     dispatch(toggleFavourite(id));
@@ -51,7 +58,7 @@ const Contact = ({ id, name, number, onDeleteContact }) => {
         </li>
         <li>
           <svg
-            onClick={() => onDeleteContact(id)}
+            onClick={() => handleDeleteContact(id)}
             className={css.deleteIcon}
             width="20px"
             height="20px"
